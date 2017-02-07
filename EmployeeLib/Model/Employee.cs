@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EmployeeLib.Model
+{
+    public class Employee
+    {
+        public string FullName { get; set; }
+        public DateTime BirthDate { get; set; }
+        public byte[] Photo { get; set; }
+        public bool IsManager { get; set; }
+    }
+}

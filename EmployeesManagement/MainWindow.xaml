@@ -1,0 +1,28 @@
+﻿<Window x:Class="EmployeeApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        Title="Ewidencja pracowników" Height="525" Width="350">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ListBox x:Name="EmployeesList"
+                 Grid.Row="0"
+                 ItemsSource="{Binding Employees}"
+                 ItemTemplate="{StaticResource EmployeesListTemplate}" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <TextBlock Text="Select Language" />
+            <ComboBox x:Name="LanguageBox"
+                      ItemsSource="{Binding AvailableCultures, Mode=OneWay, Source={StaticResource CultureSupport}}" 
+                      ItemTemplate="{StaticResource LanguageListTemplate}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding ChangeLanguageCommand}" CommandParameter="{Binding SelectedItem, ElementName=LanguageBox}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+</Window>

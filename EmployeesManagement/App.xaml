@@ -1,0 +1,64 @@
+﻿<Application x:Class="EmployeeApplication.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:EmployeeApplication.Converters"
+             xmlns:prop="clr-namespace:EmployeeApplication.Properties"
+             xmlns:system="clr-namespace:System;assembly=mscorlib" StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <ObjectDataProvider x:Key="Resources" ObjectType="{x:Type prop:CultureSupport}" MethodName="GetResourceInstance" />
+            <ObjectDataProvider x:Key="CultureSupport" ObjectType="{x:Type prop:CultureSupport}" />
+
+            <system:Double x:Key="baseFontSize">16</system:Double>
+
+            <DataTemplate x:Key="EmployeesListTemplate">
+                <DataTemplate.Resources>
+                    <converters:ByteArrayToBitmapImageConverter x:Key="ByteArrayToBitmapImageConverter" />
+                    <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+                    <converters:MultipleConverter x:Key="MultipleConverter" />
+                </DataTemplate.Resources>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" 
+                               Margin="5,10,5,10" 
+                               Source="{Binding Photo, Converter={StaticResource ByteArrayToBitmapImageConverter}}" />
+                    <Grid Grid.Column="1" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Full Name : " HorizontalAlignment="Left" FontSize="{StaticResource baseFontSize}"/>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding FullName}" FontSize="{StaticResource baseFontSize}" />
+                        <TextBlock Grid.Column="0" Grid.Row="1" Text="Birth Date : " HorizontalAlignment="Left" FontSize="{StaticResource baseFontSize}" />
+                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding BirthDate, Converter={StaticResource DateTimeToStringConverter}}" FontSize="{StaticResource baseFontSize}" />
+                        <TextBlock Grid.Column="0" Grid.Row="2" Text="Manager : " HorizontalAlignment="Left" FontSize="{StaticResource baseFontSize}" />
+                        <TextBlock Grid.Column="1" Grid.Row="2" FontSize="{StaticResource baseFontSize}">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource MultipleConverter}">
+                                    <Binding Path="IsManager" Source="{StaticResource Resources}" />
+                                    <Binding Path="IsNotManager" Source="{StaticResource Resources}" />
+                                    <Binding Path="IsManager" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Grid>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="LanguageListTemplate">
+                <TextBlock Text="{Binding DisplayName}"/>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
